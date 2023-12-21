@@ -1,6 +1,8 @@
 # Snizzle
 ![npm version](https://img.shields.io/npm/v/snizzle)
+![license](https://img.shields.io/github/license/jqrony/snizzle)
 ![author](https://img.shields.io/badge/Author-Shahzada%20Modassir-%2344cc11)
+
 __A pure-JavaScript CSS selector engine designed to be easily dropped in to a host library.__
 
 - [More information](https://snizzlejs.com/)
