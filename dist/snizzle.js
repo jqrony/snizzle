@@ -1,8 +1,8 @@
 /**
- * Snizzle is advance feature-rich CSS Selector Engine v1.2.0
+ * Snizzle is advance feature-rich CSS Selector Engine v1.2.1
  * https://snizzlejs.com/
  * 
- * @version 1.2.0
+ * @version 1.2.1
  * 
  * Copyright OpenJS Foundation and other contributors
  * Released under the MIT license
@@ -22,7 +22,7 @@ var i, support, unique, Expr, getText, isXML, tokenize, select,
 	// Local document vars
 	setDocument, document, docElem, documentIsHTML,
 
-	version = "1.2.0",
+	version = "1.2.1",
 
 	// Instance methods
 	hasOwn 	= ({}).hasOwnProperty,
@@ -39,7 +39,7 @@ var i, support, unique, Expr, getText, isXML, tokenize, select,
 	// Support: SVG [VECTOR]
 	// HTML Vector [NS] TAGS and Attributes
 	nstags	 = "svg|g|defs|desc|symbol|use|image|switch|set|circle|ellipse|line|polyline|" +
-	"animatetransform|mpath|foreignobject|linegradient|radialgradient|stop|pattern|" +
+		"animatetransform|mpath|foreignobject|linegradient|radialgradient|stop|pattern|" +
 		"polygon|path|text|tspan|textpath|tref|marker|view|rect|animatemotion|font|" +
 		"clippath|mask|filter|cursor|hkern|vkern|(?:font-(face)(?:.*|src|uri|format|name))",
 
@@ -665,7 +665,7 @@ Expr=Snizzle.selectors={
 			// pseudo-class names are case-insensitive
 			// Prioritize by case sensitivity in case custom pseudos are added with uppercase letters
 			// Remember that setFilters inherits from pseudos
-			var fn = Expr.pseudos[pseudo] || Expr.setFilters[pseudo] ||
+			var fn = Expr.pseudos[pseudo] || Expr.setFilters[pseudo] || Expr.attrHandle[pseudo] ||
 				Snizzle.error("Unsupport pseudo: Compilation failed your'"+pseudo+"' is not supported.");
 
 			// The user may use createPseudo to indicate that

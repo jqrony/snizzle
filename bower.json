@@ -2,7 +2,7 @@
   "name": "jquery",
   "main": "dist/jquery.js",
   "license": "MIT",
-	"version": "1.2.0",
+	"version": "1.2.1",
   "ignore": [
     "package.json"
   ],
