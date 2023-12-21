@@ -1,8 +1,8 @@
 /**
- * Snizzle is advance feature-rich CSS Selector Engine v1.2.1
+ * Snizzle is advance feature-rich CSS Selector Engine v1.2.2
  * https://snizzlejs.com/
  * 
- * @version 1.2.1
+ * @version 1.2.2
  * 
  * Copyright OpenJS Foundation and other contributors
  * Released under the MIT license
@@ -22,7 +22,7 @@ var i, support, unique, Expr, getText, isXML, tokenize, select,
 	// Local document vars
 	setDocument, document, docElem, documentIsHTML,
 
-	version = "1.2.1",
+	version = "1.2.2",
 
 	// Instance methods
 	hasOwn 	= ({}).hasOwnProperty,
@@ -934,7 +934,7 @@ access(function(attr) {
 	Expr.attrHandle[attr]=access(function(elem) {
 		return attrFilter(elem, attr, "hasAttribute");
 	});
-})(booleans.match(/\w+/g));
+})(booleans.concat("|" + nsattributes).match(/\w+/g));
 
 /**
  * setFilters

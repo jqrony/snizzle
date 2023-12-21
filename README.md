@@ -7,7 +7,7 @@ __A pure-JavaScript CSS selector engine designed to be easily dropped in to a ho
 - [Browser support](https://github.com/jqrony/snizzle/wiki/#wiki-browsers)
 
 ## License
-- [MIT License](https://github.com/jqrony/snizzle/blob/1.2.1/LICENSE.txt)
+- [MIT License](https://github.com/jqrony/snizzle/blob/1.2.2/LICENSE.txt)
 
 What you need to build Snizzle
 ---------------------------
