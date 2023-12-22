@@ -1,5 +1,6 @@
 # Snizzle
 ![npm version](https://img.shields.io/npm/v/snizzle)
+[![downloads](https://img.shields.io/npm/dt/snizzle?labelColor=%23555555)](https://www.npmjs.com/package/snizzle)
 ![license](https://img.shields.io/github/license/jqrony/snizzle)
 [![install size](https://packagephobia.com/badge?p=snizzle)](https://packagephobia.com/result?p=snizzle)
 ![author](https://img.shields.io/badge/Author-Shahzada%20Modassir-%2344cc11)
