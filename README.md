@@ -6,6 +6,7 @@
 ![author](https://img.shields.io/badge/Author-Shahzada%20Modassir-%2344cc11)
 [![jsDelivr Hits](https://data.jsdelivr.com/v1/package/npm/snizzle/badge?style=flat-square)](https://www.jsdelivr.com/package/npm/snizzle)
 [![downloads month](https://img.shields.io/npm/dm/snizzle?style=flat-square)](https://www.npmjs.com/package/snizzle)
+[![Github starts](https://img.shields.io/github/stars/jqrony/snizzle?style=flat-square)](https://github.com/jqrony/snizzle)
 
 __A pure-JavaScript CSS selector engine designed to be easily dropped in to a host library.__
 
