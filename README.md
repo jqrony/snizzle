@@ -1,4 +1,7 @@
 # Snizzle
+
+<img src="thumbnail.png" style="width:100%;">
+
 ![npm version](https://img.shields.io/npm/v/snizzle)
 [![downloads](https://img.shields.io/npm/dt/snizzle?labelColor=%23555555)](https://www.npmjs.com/package/snizzle)
 ![license](https://img.shields.io/github/license/jqrony/snizzle)
