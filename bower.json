@@ -2,11 +2,12 @@
   "name": "jquery",
   "main": "dist/jquery.js",
   "license": "MIT",
-	"version": "1.3.0",
+	"version": "1.3.1",
   "ignore": [
     "package.json"
   ],
   "keywords": [
+    "snizzle",
     "jquery",
     "javascript",
     "browser",

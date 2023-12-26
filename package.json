@@ -1,8 +1,9 @@
 {
   "title": "Snizzle",
   "name": "snizzle",
-  "version": "1.3.0",
-  "description": "A pure-Javascript, Advance CSS Selector Engine v1.2.0",
+  "version": "1.3.1",
+  "description": "A pure-Javascript, Advance CSS Selector Engine v1.3.1",
+  "types": "dist/snizzle.js",
   "main": "dist/snizzle.js",
   "scripts": {
     "build": "npm install && grunt",
@@ -20,21 +21,16 @@
     "selector",
     "jqrony"
   ],
-  "author": "Shahzada Modassir (https://github.com/jqrony/snizzle/blob/1.2.0/AUTHORS.txt)",
+  "author": "Shahzada Modassir (https://github.com/jqrony/snizzle/blob/main/AUTHORS.txt)",
   "license": "MIT",
   "files": [
-    "COPYRIGHT.txt",
-    "bower.json",
-    "codeowners",
-    "AUTHORS.txt",
-    "LICENSE.txt",
-    "README.md",
     "dist/snizzle.js",
+    "LICENSE",
+    "bower.json",
+    "AUTHORS.txt",
+    "README.md",
     "dist/snizzle-min.js"
   ],
-  "dependencies":{
-    "snizzle":"^1.3.0"
-  },
   "bugs": {
     "url": "https://github.com/jqrony/snizzle/issues"
   },

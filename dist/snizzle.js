@@ -1,15 +1,15 @@
 /**
- * Snizzle is advance feature-rich CSS Selector Engine v1.3.0
+ * Snizzle is advance feature-rich CSS Selector Engine v1.3.1
  * https://snizzlejs.com/
  * 
- * @version 1.3.0
+ * @version 1.3.1
  * 
  * Copyright OpenJS Foundation and other contributors
  * Released under the MIT license
  * @license MIT
  * https://github.com/jqrony/snizzle/LICENSE
  * 
- * Date: 28 November 2023 02:30 GMT+0530 (India Standard Time)
+ * Date: 26 December 2023 02:30 GMT+0530 (India Standard Time)
  */
 (function(window) {
 var i, support, unique, Expr, getText, isXML, tokenize, select,
@@ -22,14 +22,13 @@ var i, support, unique, Expr, getText, isXML, tokenize, select,
 	// Local document vars
 	setDocument, document, docElem, documentIsHTML,
 
-	version = "1.3.0",
+	version = "1.3.1",
 
 	// Instance methods
 	hasOwn 	= ({}).hasOwnProperty,
 	arr 		= [],
 	indexOf = arr.indexOf,
 	push 		= arr.push,
-	pop 		= arr.pop,
 	slice 	= arr.slice,
 	concat	= arr.concat,
 
@@ -711,6 +710,22 @@ Expr=Snizzle.selectors={
 		"contains": specialFunction(function(text) {
 			return access(function(elem) {
 				return (elem.textContent||getText(elem)).indexOf(text) > -1;
+			});
+		}),
+		"icontains": specialFunction(function(text) {
+			return access(function(elem) {
+				return (
+					elem.textContent||
+					elem.innerText||
+					getText(elem)
+				).toLowerCase().indexOf((text + "").toLowerCase()) > -1;
+			});
+		}),
+		"match": specialFunction(function(regex) {
+			return access(function(elem) {
+				return regex.test(
+					elem.textContent||elem.innerText||getText(elem)
+				);
 			});
 		}),
 		"lang": specialFunction(function(lang) {
