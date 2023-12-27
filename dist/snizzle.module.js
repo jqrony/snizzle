@@ -12,7 +12,7 @@
  * @author Shahzada Modassir <codingmodassir@gmail.com>
  * Date: 27 December 2023 02:30 GMT+0530 (India Standard Time)
  */
-(function(window) {
+export default (function(window) {
 var i, support, unique, Expr, getText, isXML, tokenize, select,
 	contains, copy, flat, access,
 
@@ -1100,12 +1100,5 @@ Snizzle.noConflict=function() {
 	window.Snizzle===Snizzle && (window.Snizzle=_snizzle);
 	return Snizzle;
 };
-if (typeof define==="function" && define.amd) {
-	define(function() { return Snizzle; });
-} else if (typeof module==="object" && module.exports) {
-	module.exports=Snizzle;
-} else {
-	window.Snizzle=Snizzle;
-}
-// EXPOSE
+return Snizzle;
 })(window);
