@@ -1,12 +1,12 @@
 {
   "name": "snizzle",
-  "version": "1.3.3",
+  "version": "1.4.0",
   "main": "dist/snizzle.js",
   "ignore": [
     "node_modules",
     "package.json"
   ],
-  "description": "Forgerer – Javascript library to generate anything fake random data",
+  "description": "A pure-JavaScript fast, CSS selector engine program to be easily select DOM-Elements.",
   "homepage": "https://github.com/jqrony/snizzle",
   "keywords": [
     "snizzle",
