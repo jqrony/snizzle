@@ -31,6 +31,8 @@ Linux/BSD users should use their appropriate package managers to install git and
 ## Downloading Snizzle using npm or Yarn
 Snizzle is registered as a <a href="https://www.npmjs.com/package/snizzle">package</a> on <a href="https://www.npmjs.com/">npm</a>. You can install the latest version of Snizzle with the npm CLI command:
 
+[![NPM](https://nodei.co/npm/snizzle.png?compact=true)](https://npmjs.com/package/snizzle)
+
 ```bash
 # install locally (recomended)
 yarn add snizzle
