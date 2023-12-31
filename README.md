@@ -53,6 +53,8 @@ Below are some of the most common ways to include Snizzle
 ```html
 <!--including Snizzle (recomended) HTML document in head section -->
 <script src="https://jqrony.github.io/snizzle/dist/snizzle-min.js"></script>
+<!--OR-->
+<script src="https://cdn.jsdelivr.net/npm/snizzle/dist/snizzle-min.js"></script>
 ```
 
 ## Usage
