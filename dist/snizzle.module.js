@@ -1,65 +1,54 @@
 /**
- * Snizzle is a advance feature-rich CSS Selector Engine v1.4.0
- * https://github.com/jqrony/snizzle
+ * Snizzle is advance feature-rich CSS Selector Engine v1.3.3
+ * https://snizzlejs.com/
  * 
- * @releases +7 releases
- * @version 1.4.0
+ * @version 1.3.3
  * 
  * Copyright OpenJS Foundation and other contributors
  * Released under the MIT license
  * @license MIT
- * https://github.com/jqrony/snizzle/blob/main/LICENSE
+ * https://github.com/jqrony/snizzle/LICENSE
  * 
  * @author Shahzada Modassir <codingmodassir@gmail.com>
- * Date: 20 December 2023 12:25 GMT+0530 (India Standard Time)
+ * Date: 27 December 2023 02:30 GMT+0530 (India Standard Time)
  */
-(function(window) {
+export default (function(window) {
 var i, support, unique, Expr, getText, isXML, tokenize, select,
-	contains, copy, flat, access, compile, serializeSpace,
+	contains, copy, flat, access,
 
 	// Instance-specific data
 	expando = "snizzle" + 1 * Date.now(),
 	preferredDoc = window.document,
 
-	version = "1.4.0",
+	// Local document vars
+	setDocument, document, docElem, documentIsHTML,
+
+	version = "1.3.3",
 
 	// Instance methods
 	hasOwn 	= ({}).hasOwnProperty,
-	arr			= [],
-	indexOf	= arr.indexOf,
-	push		= arr.push,
-	pop			= arr.pop,
-	slice		= arr.slice,
-	splice	= arr.splice,
+	arr 		= [],
+	indexOf = arr.indexOf,
+	push 		= arr.push,
+	slice 	= arr.slice,
 	concat	= arr.concat,
-
-	// Used for iframes
-	// See setDocument()
-	// Removing the function wrapper causes a "Permission Denied"
-	// error in IE
-	unloadHandler = function() {
-		setDocument();
-	},
-
-	// Local document vars
-	setDocument, document, docFragment, docElem, documentIsHTML,
-
-	// Regular expressions sources
-	// HTML Singleton TAGS with no closing TAG
-	nctags = "img|input|meta|area|keygen|base|link|br|hr|command|col|param|track|wbr|embed|" +
-		"source",
-
-	nstags = "svg|g|defs|desc|symbol|use|image|switch|set|circle|ellipse|line|polyline|" +
-		"animatetransform|mpath|foreignobject|linegradient|radialgradient|stop|pattern|" +
-		"polygon|path|text|tspan|textpath|tref|marker|view|rect|animatemotion|font|" +
-		"clippath|mask|filter|cursor|hkern|vkern|(?:font-(face)(?:.*|src|uri|format|name))",
 
 	booleans = "checked|selected|async|autofocus|autoplay|controls|defer|disabled|hidden|" +
 		"ismap|loop|multiple|open|readonly|required|scoped|muted",
 
-	themes = "theme-color|apple-mobile-web-app-status-bar-style|msapplication-TileColor|" +
+	// Support: SVG [VECTOR]
+	// HTML Vector [NS] TAGS and Attributes
+	nstags	 = "svg|g|defs|desc|symbol|use|image|switch|set|circle|ellipse|line|polyline|" +
+		"animatetransform|mpath|foreignobject|linegradient|radialgradient|stop|pattern|" +
+		"polygon|path|text|tspan|textpath|tref|marker|view|rect|animatemotion|font|" +
+		"clippath|mask|filter|cursor|hkern|vkern|(?:font-(face)(?:.*|src|uri|format|name))",
+
+	theme = "theme-color|apple-mobile-web-app-status-bar-style|msapplication-TileColor|" +
 		"msapplication-navbutton-color",
-	
+
+	// HTML Singleton TAGS with no closing TAG
+	nctags 	 = "img|input|meta|area|keygen|base|link|br|hr|command|col|param|track|wbr",
+
 	nsattributes = "clip|color|cursor|direction|display|fill|filter|font|kerning|marker|" +
 		"mask|stroke|zoomandpan|xml:(?:lang|space|base)|clip-(?:path|rule)|lighting-color|" +
 		"points|d|viewbox|enable-background|fill-(?:opacity|rule)|flood-(?:color|opacity)|" +
@@ -67,54 +56,41 @@ var i, support, unique, Expr, getText, isXML, tokenize, select,
 		"dominant-baseline|x1|x2|y1|y2|cx|cy|r|ry|" +
 		"stroke-(?:dasharray|dashoffset|linecap|linejoin|miterlimit|opacity|width)|text-rendering",
 
+	// Regular expressions
 	whitespace = "[\\x20\\t\\r\\n\\f]",
-	identifier = "(?:\\\\[\\da-fA-F]{1,6}" + whitespace + "?|\\\\[^\\r\\n\\f]|[\\w-]|[^\0-\\x7f])+",
-	wspaceboth = "[#.'\"](" + whitespace + "+)([\\w-]+)(" + whitespace + "+)['\"]*",
+	identifier = "(?:\\\\[\\da-fA-F]{1,6}" + whitespace +
+		"?|\\\\[^\\r\\n\\f]|[\\w-]|[^\0-\\x7f])+",
 
-	attributes = "\\[" + whitespace + "*(" + identifier + ")(?:" + whitespace + "*([*^$|!~]?=)" +
-		whitespace + "*(?:'((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\"|(" +
-		identifier + "))|)" + whitespace + "*\\]",
-
-	pseudos = ":(" + identifier + ")(?:\\((" + "('((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\")|" +
-		"((?:\\\\.|[^\\\\()[\\]]|" + attributes + ")*)|" + ".*" + ")\\)|)",
-	
-	// XPathExpressions selectors: https://github.com/jquery/jquery/wiki/XPathExpressions (#302)
-	XPathChainable = "([\\w-]+)\\[" + whitespace + "*(\\d+)" + whitespace + "*\\]",
-	// Easily-selectable/retrievable XPath chainable slashes Like /tag1/tag2/tag3/tag4/ chaining
-	XPathCSlashes = whitespace + "*\\b(\\)*)(\\/)\\b|((\\])\\/)" + whitespace + "*",
-	XPathSiblings = "([\\w-]+)" + XPathCSlashes + "following-sibling::([\\w-]+)",
-	XPathAttributes = "\\[" + whitespace + "*(?:(([\\w-]+)\\(\\@([\\w-]+)," + whitespace +
-		"*['\"]" + whitespace + "*(.*?)" + whitespace +
-		"*['\"])\\)|((?:first|last|odd|even|name)\\(\\))|(\\@[\\w-]+" + whitespace + "*=" +
-		whitespace + "*['\"]*(.*?)['\"]*)|(([\\w-]+)\\(\\@(.*?)\\))|(\\@[\\w-]+)|"+
-		"([\\w-]+\\(\\))" + whitespace + "*=['\"]*" + whitespace + "*(.*?)" + whitespace + "*['\"]*|" +
-		"([\\w-]+)\\(" + whitespace + "*([\\w-]+\\(\\))," + whitespace + "*['\"]*(.*?)['\"]*\\))" +
+	attributes = "\\[" + whitespace + "*(" + identifier + ")(?:" + whitespace +
+		"*([*^$|!~]?=)" + whitespace +
+		"*(?:'((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\"|(" + identifier + "))|)" +
 		whitespace + "*\\]",
 
-	// Regular expressions
-	rcomma = new RegExp("^" + whitespace + "*," + whitespace + "*"),
-	rxpathchainable = new RegExp(XPathChainable, "g"),
-	rthemes = new RegExp("^(?:" + themes + ")$", "i"),
-	rinputs = /^(?:input|select|textarea|button)/i,
-	rwhitespace = new RegExp(whitespace + "+", "g"),
-	ridentifier = new RegExp("^" + identifier + "$"),
-	rxpath = new RegExp(XPathSiblings + "|" + XPathAttributes),
-	rnative = /^[^{]+\{\s*\[native \w/,
-	rxpathtrimming = /^\/(?:|\/\*)+/,
-	rxslashes = new RegExp(XPathCSlashes,"g"),
-	ltrimslash = /\/\s*$/,
-	rhtml = /HTML$/i,
-	rheader = /^h[1-6]$/i,
-	rwspaceboth = new RegExp(wspaceboth, "g"),
-	// None animation => (none 0s ease 0s 1 normal none running)
-	rnoneanimation = /^(none)\s*(0s)\s*(ease)\s*(0s).*(running)/,
+	pseudos = ":(" + identifier + ")(?:\\((" +
+		"('((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\")|" +
+		"((?:\\\\.|[^\\\\()[\\]]|" + attributes + ")*)|" + ".*" + ")\\)|)",
+
+	rinputs			 = /^(?:input|select|textarea|button)/i,
+	rjsonp			 = /\bapplication\/json\b/,
+	// detect rcomma and lcomma and whitespaces
+	rcomma			 = /(^\s*,|,$|\s+)/g,
+	rcombine 		 = /^[>+~=<]+$/,
+	rheader			 = /^h\d$/i,
+	rmonofont		 = /monospace/i,
+	rtheme		 	 = new RegExp("^(?:" + theme + ")$", "i"),
+	rhtml 		 	 = /HTML$/i,
+	rnative		 	 = /^[^{]+\{\s*\[native \w/,
 	// Easily-parseable/retrievable ID or TAG or CLASS selectors
-	rquickExpr = /^(?:#(\s*[\w-]+\s*)|(\w+)|\.([\w-]+))$/,
-	rcombinators = new RegExp("^" + whitespace+ "*([>+~=<]|" +whitespace+ ")" + whitespace + "*"),
-	rtrim = new RegExp("^" + whitespace + "+|((?:^|[^\\\\])(?:\\\\.)*)" + whitespace + "+$", "g"),
-	matchExpr = {
-		"inlineTag": new RegExp("^(?:" + nctags + ")$", "i"),
-		"bool": new RegExp("^(?:" + booleans + ")$", "i"),
+	rquickExpr 	 = /^(?:#([\w-]+)|(\w+)|\.([\w-]+))$/,
+	rnoAnimation = /^(none)\s*(0s)\s*(ease)\s*(0s).*(running)/,
+		
+	rtrim = new RegExp("^"+whitespace +"+|((?:^|[^\\\\])(?:\\\\.)*)"+whitespace+"+$", "g"),
+	rcombinators = new RegExp("^"+ whitespace+"*([>+~=<]|"+whitespace+")"+whitespace+ "*"),
+	ridentifier = new RegExp( "^" + identifier + "$" ),
+	rwhitespace = new RegExp( whitespace + "+", "g" ),
+	matchExpr  = {
+		inlineTag: new RegExp("^(?:" + nctags + ")$", "i"),
+		bool: new RegExp("^(?:" + booleans + ")$", "i"),
 		"ID": new RegExp("^#(" + identifier + ")"),
 		"CLASS": new RegExp("^\\.(" + identifier + ")"),
 		"TAG": new RegExp("^(" + identifier + "|[*])"),
@@ -132,112 +108,42 @@ var i, support, unique, Expr, getText, isXML, tokenize, select,
 			"*[>+~=<]|:(even|odd|eq|gt|lt|nth|first|last)(?:\\(" + whitespace +
 			"*((?:-\\d)?\\d*)" + whitespace + "*\\)|)(?=[^-]|$)", "i")
 	};
-	
+
 /**
- * 
+ * Snizzle main Returnable Function
+ * --------------------------------
+ * main returnable snizzle function like export/expose and returns
  */
 function Snizzle(selector, context, results, seed) {
-	var expr, match, elem, newContext = context && context.ownerDocument,
-		nodeType = context ? context.nodeType : 9,
-		rxpathattr;
-		results  = results || [];
-
+	var expm, match, elem, newContext = context && context.ownerDocument,
+		nodeType = context ? context.nodeType : 9;
+		results  = results||[];
+	
 	// Return early from calls with invalid selector or context
-	if (typeof selector!== "string" || !selector ||
-		(nodeType!==1 && nodeType!==9 && nodeType!==11)) {
+	if (typeof selector!=="string" || !selector ||
+		nodeType!==1 && nodeType!==9 && nodeType!==11) {
 		return document;
 	}
 
-	// Try to shortcut find operations (as opposed) in HTML documents
-	// HANDLE: ID or TAG or CLASS selectors if not [seed]
 	if (!seed) {
-		setDocument(context);
+		(newContext||context||preferredDoc)!==document&&setDocument(context);
 		context=context||document;
 		if (documentIsHTML) {
 			if (nodeType!==11 && (match=rquickExpr.exec(selector))) {
-				// Discuss for simple ID Selector
-				if ((expr=match[1])) {
-					// Support: IE, Opera, Webkit
-					// TODO: identify versions
-					// getElementById can match elements by name instead of ID
-					// *Document context
-					elem=nodeType===9 ? (context.getElementById(expr)) :
-					
-					// Support: IE, Opera, Webkit
-					// TODO: identify versions
-					// getElementById can match elements by name instead of ID
-					// *Element context
-					newContext && newContext.getElementById(expr);
-					elem && results.push(elem);
-					return results;
-				} else {
-					// Discuss for simple TAG & CLASS Selector
-					expr=match[3];
-					// Type/TAG Selector
-					// Support: Chrome, IE, Opera, Webkit
-					// TODO: identify versions
-					// getElementById can match elements by name instead of TAG
-					elem=match[2] ? context.getElementsByTagName(selector) :
-
-					// CLASS Selector
-					// Support: Chrome, IE, Opera, Webkit
-					// TODO: identify versions
-					// getElementById can match elements by name instead of CLASS
-					expr && context.getElementsByClassName(expr);
+				if (expm=match[1]) {
+					if ((nodeType===9 && (elem=context.getElementById(expm))) ||
+						(newContext && (elem=newContext.getElementById(expm)))) {
+						results.push(elem);
+						return results;
+					}
+				}
+				if (((expm=match[3]) && (elem=context.getElementsByClassName(expm)))||
+					((expm=match[2]) && (elem=context.getElementsByTagName(selector)))){
 					push.apply(results, elem);
 					return results;
 				}
 			}
 		}
-	}
-
-	if (selector==="/") {
-		selector=":root";
-	} else {
-		selector = selector.replace(rxpathtrimming, "")
-		.replace(rxpathchainable, "$1:nth-of-type($2)")
-		.replace(rxslashes, function(_m, tkn, _slash) {
-			return (arguments[4] || tkn) + " > ";
-		});
-	}
-
-	if (rxpath.test(selector)) {
-		rxpathattr = new RegExp(XPathAttributes, "g");
-		var combinators = {
-			"starts-with": "^=",
-			"contains": "*=",
-			"ends-with": "$="
-		};
-		selector = selector.replace(rxpathattr, function(_arg1, _arg2,
-			// [combinator(@attribute, value)] [@attribute^=value]
-			combexpr, prop, value,
-
-			// Support :pseudos only [first|last|odd|even|name]
-			// [pseudos()] => :pseudo()
-			pseudo,
-
-			// [@attribute="value"] [attribute=value]
-			attr, attr2,
-
-			// [(not|has|filter)(@attribute)] :not([attribute])
-			expr, pseudo1, attr1,
-
-			// [@attribute] [attribute]
-			selfattr) {
-
-			if (combexpr && prop && value) {
-				return "[" + prop + combinators[combexpr] + value + "]";
-			}
-			if (expr && pseudo1 && attr1) {
-				return ":" + pseudo1 + "([" + attr1 + "])";
-			}
-			if (pseudo) {
-				return ":" + pseudo;
-			}
-			if (attr && attr2 || selfattr) {
-				return "[" + (attr || selfattr).replace("@", "") + "]";
-			}
-		});
 	}
 
 	return select(selector.replace(rtrim, "$1"), context, results, seed);
@@ -396,32 +302,23 @@ access=Snizzle.access=function(ismap, fn) {
 }
 
 /**
- * 
+ * Snizzle in Detects the XML nodes
+ * --------------------------------
+ * isXML method returns only xml nodes with Boolean value true/false
  */
-serializeSpace=Snizzle.serializeSpace=function(selector) {
-	var rwhite = /[\x20\r\n\t\f]/g;
-	var s = /[#.](\s*)([\w-]+)(\s*)/g;
-
-	selector=selector.trim()
-	.replace(ltrimslash, "")
-	.replace(s, function(matched) {
-		return matched.replace(rwhite, "\\\x20");
-	});
-
-	return selector;
-};
-
 isXML=Snizzle.isXML=function(elem) {
 	var namespace = elem && elem.namespaceURI,
-		docElem = elem && (elem.ownerDocument||elem).documentElement;
+		docElem = elem && (elem.ownerDocument || elem).documentElement;
 	return !rhtml.test(namespace||docElem && docElem.nodeName||"HTML");
 };
 
 /**
- * 
+ * SetDocument set the global document
+ * -----------------------------------
+ * Sets document-related variables once based on the current document
  */
 setDocument=Snizzle.setDocument=function(node) {
-	var hasCompare, subWindow,
+	var hasCompare,
 		doc = node ? node.ownerDocument || node : preferredDoc;
 
 	// Return early if doc is invalid or already selected
@@ -434,18 +331,9 @@ setDocument=Snizzle.setDocument=function(node) {
 	}
 
 	// Update global variables
-	document 			 = doc;
+	document			 = doc;
 	docElem				 = document.documentElement;
 	documentIsHTML = !isXML(document);
-
-	if (preferredDoc!==doc &&
-		(subWindow=document.defaultView) && subWindow.top!==subWindow) {
-		// Support: IE 11, Edge
-		subWindow.addEventListener &&
-		subWindow.addEventListener("unload", unloadHandler, false),
-		// Support: IE 9 - 10 only
-		subWindow.attachEvent && subWindow.attachEvent("onunload", unloadHandler);
-	}
 
 	/**
 	 * Create Selectors Snizzle Supports:
@@ -818,11 +706,27 @@ Expr=Snizzle.selectors={
 			});
 		}),
 		"theme": access(function(elem) {
-			return elem.nodeName.toLowerCase()==="meta" && rthemes.test(attrFilter(elem, "name"));
+			return elem.nodeName.toLowerCase()==="meta" && rtheme.test(attrFilter(elem, "name"));
 		}),
 		"contains": specialFunction(function(text) {
 			return access(function(elem) {
 				return (elem.textContent||getText(elem)).indexOf(text) > -1;
+			});
+		}),
+		"icontains": specialFunction(function(text) {
+			return access(function(elem) {
+				return (
+					elem.textContent||
+					elem.innerText||
+					getText(elem)
+				).toLowerCase().indexOf((text + "").toLowerCase()) > -1;
+			});
+		}),
+		"match": specialFunction(function(regex) {
+			return access(function(elem) {
+				return regex.test(
+					elem.textContent||elem.innerText||getText(elem)
+				);
 			});
 		}),
 		"lang": specialFunction(function(lang) {
@@ -965,7 +869,7 @@ Expr=Snizzle.selectors={
 			return getComputed(elem, "position")!=="static" || elem===docElem;
 		}),
 		"animated": access(function(elem) {
-			return !rnoneanimation.test(getComputed(elem, "animation")) || elem.nodeName==="MARQUEE";
+			return !rnoAnimation.test(getComputed(elem, "animation")) || elem.nodeName==="MARQUEE";
 		}),
 		"json": access(function(elem) {
 			var nodeName=elem.nodeName&&elem.nodeName.toLowerCase();
@@ -1028,6 +932,14 @@ Expr=Snizzle.selectors={
 Expr.pseudos["is"]	= Expr.pseudos["filter"];
 Expr.pseudos["nth"]	= Expr.pseudos["eq"];
 Expr.pseudos["ctx"] = Expr.pseudos["context"];
+
+for(i in {abs: true, stick: true, fixed: true, block: true}) {
+	Expr.pseudos[i]=createPositionalPseudo(i);
+}
+
+for(i in {description:true, keywords:true}) {
+	Expr.pseudos[i]=10;
+}
 
 for (i in Expr.relative) {
 	Expr.combinators[i]=addCombinators(Expr.relative[i]);
@@ -1148,7 +1060,6 @@ select=Snizzle.select=function(selector, context, results, seed) {
 	seed     = seed||[];
 	seedLen  = seed.length;
 	selector = adjustFromGroupMatcher(selector);
-
 	while((tokens=selector[i++])) {
 		feed=seedLen && seed || [];
 		if (!seedLen) {
@@ -1157,7 +1068,7 @@ select=Snizzle.select=function(selector, context, results, seed) {
 		match=tokenize(tokens);
 		j=0;
 		while((token=match[j++])) {
-			if ((matched=rcombinators.exec(tokens))) {
+			if ((matched=rcombine.exec(tokens))) {
 				feed=Expr.combinators[matched[0]]([context]);
 			} else if (Expr.combinators[token.type]) {
 				feed=Expr.combinators[token.type](feed);
@@ -1181,19 +1092,13 @@ Snizzle.uniqueSort=function(results) {
 setDocument();
 
 /**
- * 
+ * EXPOSE and noConflict Snizzle
+ * -----------------------------
  */
 var _snizzle = window.Snizzle;
 Snizzle.noConflict=function() {
 	window.Snizzle===Snizzle && (window.Snizzle=_snizzle);
 	return Snizzle;
 };
-if (typeof define==="function" && define.amd) {
-	define(function() { return Snizzle; });
-} else if (typeof module==="object" && module.exports) {
-	module.exports=Snizzle;
-} else {
-	window.Snizzle=Snizzle;
-}
-// EXPOSE
+return Snizzle;
 })(window);

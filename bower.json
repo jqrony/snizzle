@@ -1,15 +1,25 @@
 {
-  "name": "jquery",
-  "main": "dist/jquery.js",
-  "license": "MIT",
-	"version": "1.3.0",
+  "title": "Snizzle",
+  "name": "snizzle",
+  "version": "1.4.0",
+  "main": "dist/snizzle.js",
   "ignore": [
+    "node_modules",
     "package.json"
   ],
+  "description": "A pure-JavaScript fast, CSS selector engine program to be easily select DOM-Elements.",
+  "homepage": "https://github.com/jqrony/snizzle",
   "keywords": [
-    "jquery",
-    "javascript",
-    "browser",
-    "library"
-  ]
+    "snizzle",
+    "CSS",
+    "selectors",
+    "pseudo",
+    "jqrony",
+    "library",
+    "javascript"
+  ],
+  "author": {
+    "name": "Shahzada Modassir",
+    "url": "https://github.com/jqrony/snizzle/blob/main/AUTHORS.txt"
+  }
 }
