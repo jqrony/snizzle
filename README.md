@@ -19,8 +19,27 @@
 - [Latest release](https://github.com/jqrony/snizzle/releases/latest)
 - [Deployed source](https://jqrony.github.io/snizzle/dist/snizzle-min.js)
 
+## New Features
+Snizzle `v1.4.0` in new features included for related advance DOM-Element Selecting Snizzle library in added new features `XPath selenium` now user can be select DOM elements XPath through.
+
+**Example**
+```js
+// Select elements with XPath
+Snizzle("//*[@id="content"]/div[2]/section/nav/ul/li[3]");
+
+Snizzle("a[start-with(@href='://')]");
+
+// Simple @attributes Selector
+Snizzle("[@id]");
+
+Snizzle("li[odd()]"); // output: odd li elements sequence
+
+// Select elements with Full XPath
+Snizzle("/html/body/main/div/div[2]/section/nav/ul/li[3]");
+```
+
 ## Contribution Guides
-In order to build Snizzle, you should have Node.js/npm latest and git 1.3.3 or later (earlier versions might work OK, but are not tested).
+In order to build Snizzle, you should have Node.js/npm latest and git 1.4.0 or later (earlier versions might work OK, but are not tested).
 
 For Windows you have to download and install git and [Node.js](https://nodejs.org/download/).
 
@@ -30,6 +49,8 @@ Linux/BSD users should use their appropriate package managers to install git and
 
 ## Downloading Snizzle using npm or Yarn
 Snizzle is registered as a <a href="https://www.npmjs.com/package/snizzle">package</a> on <a href="https://www.npmjs.com/">npm</a>. You can install the latest version of Snizzle with the npm CLI command:
+
+[![NPM](https://nodei.co/npm/snizzle.png?compact=true)](https://npmjs.com/package/snizzle)
 
 ```bash
 # install locally (recomended)
@@ -43,7 +64,7 @@ As an alternative you can use the Yarn CLI command:
 ### Snizzle information
 For information on how to get started and how to use Snizzle, please see [Snizzle's](https://github.com/jqrony/snizzle) [documentation](https://github.com/jqrony/snizzle/wiki). For source files and issues, please visit the Snizzle repository.
 
-If upgrading, please see the blog post for [release 1.3.0](https://github.com/jqrony/snizzle/releases/tag/1.3.0). This includes notable differences from the previous version and a more readable changelog.
+If upgrading, please see the blog post for [release 1.4.0](https://github.com/jqrony/snizzle/releases/tag/1.4.0). This includes notable differences from the previous version and a more readable changelog.
 
 ## Including Snizzle
 Below are some of the most common ways to include Snizzle
@@ -52,7 +73,7 @@ Below are some of the most common ways to include Snizzle
 #### Script tag
 ```html
 <!--including Snizzle (recomended) HTML document in head section -->
-<script src="https://jqrony.github.io/snizzle/dist/snizzle-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/snizzle/dist/snizzle.min.js"></script>
 ```
 
 ## Usage
@@ -80,6 +101,61 @@ There are simple some usage Snizzle code example syntax and learn more click [Do
 
 Code example: `Snizzle("body > div:nth-child(2) + main:eq(2) > :input:disabled)`
 
+**50+ :PSEUDOS and Support With <font color="blue">XPath</font> Selenium**
+- ### Full <font color="blue">:pseudos</font> list
+  - `:first`
+  - `:last`
+  - `:eq`
+  - `:center`
+  - `:odd`
+  - `:even`
+  - `:lt`
+  - `:gt`
+  - `:not`
+  - `:has`
+  - `:filter`
+  - `:theme`
+  - `:contains`
+  - `:icontains`
+  - `:match` This method will be work same `contains` and `icontains` but :match pseudo find the text regular expression through `Snizzle(":match(hello|foo|bar))`
+  - `:lang`
+  - `:target`
+  - `:root`
+  - `:focus`
+  - `:checked`
+  - `:selected`
+  - `:empty`
+  - `:parent`
+  - `:enabled`
+  - `:disabled`
+  - `:visible`
+  - `:hidden`
+  - `:get` Select method="GET" form Element.
+  - `:post` Select method="POST" form Element.
+  - `:header`
+  - `:input`
+  - `:button`
+  - `:text`
+  - `:animated`
+  - `:offset`
+  - `:module` Select type="module" script Element.
+  - `:json` Select type="application/json" script Element.
+  - `:intscript` Select internal script Element
+  - `:extscript` Select external script Element
+  - `:inline` Select All inline Element
+  - `:is`
+  - `:nth`
+  - `:submit`
+  - `:reset`
+  - `:menu`
+  - `:radio`
+  - `:checkbox`
+  - `:file`
+  - `:password`
+  - `:image`
+  - `:search`
+  - `:range`
+  - `:url`
 
 ## How to build Snizzle
 Clone a copy of the main Snizzle git repo by running:

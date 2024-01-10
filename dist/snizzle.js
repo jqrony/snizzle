@@ -1,9 +1,9 @@
 /**
- * Snizzle is a advance feature-rich CSS Selector Engine v1.4.0
+ * Snizzle is a advance feature-rich CSS Selector Engine v1.4.1
  * https://github.com/jqrony/snizzle
  * 
  * @releases +7 releases
- * @version 1.4.0
+ * @version 1.4.1
  * 
  * Copyright OpenJS Foundation and other contributors
  * Released under the MIT license
@@ -21,7 +21,7 @@ var i, support, unique, Expr, getText, isXML, tokenize, select,
 	expando = "snizzle" + 1 * Date.now(),
 	preferredDoc = window.document,
 
-	version = "1.4.0",
+	version = "1.4.1",
 
 	// Instance methods
 	hasOwn 	= ({}).hasOwnProperty,
@@ -823,6 +823,15 @@ Expr=Snizzle.selectors={
 		"contains": specialFunction(function(text) {
 			return access(function(elem) {
 				return (elem.textContent||getText(elem)).indexOf(text) > -1;
+			});
+		}),
+		"icontains": specialFunction(function(text) {
+			return access(function(elem) {
+				return (
+					elem.textContent||
+					elem.innerText||
+					getText(elem) || ""
+				).toLowerCase().indexOf((text + "").toLowerCase()) > -1;
 			});
 		}),
 		"lang": specialFunction(function(lang) {
