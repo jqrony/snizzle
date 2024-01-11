@@ -32,7 +32,7 @@ Snizzle("a[start-with(@href='://')]");
 // Simple @attributes Selector
 Snizzle("[@id]");
 
-Snizzle("li[odd()]"); // output: odd li elements sequence
+Snizzle("li[odd()]"); // output: odd li elements sequence.
 
 // Select elements with Full XPath
 Snizzle("/html/body/main/div/div[2]/section/nav/ul/li[3]");
