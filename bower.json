@@ -1,7 +1,6 @@
 {
-  "title": "Snizzle",
   "name": "snizzle",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "main": "dist/snizzle.js",
   "ignore": [
     "node_modules",
@@ -11,6 +10,7 @@
   "homepage": "https://github.com/jqrony/snizzle",
   "keywords": [
     "snizzle",
+    "hot selector",
     "CSS",
     "selectors",
     "pseudo",

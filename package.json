@@ -1,7 +1,7 @@
 {
   "title": "Snizzle",
   "name": "snizzle",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "A pure-JavaScript fast, CSS selector engine program to be easily select DOM-Elements",
   "types": "dist/snizzle.js",
   "main": "dist/snizzle.js",
@@ -20,6 +20,7 @@
   },
   "keywords": [
     "snizzle",
+    "hot selector",
     "CSS",
     "selectors",
     "pseudo",

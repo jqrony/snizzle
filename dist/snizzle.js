@@ -1,9 +1,9 @@
 /**
- * Snizzle is a advance feature-rich CSS Selector Engine v1.4.1
+ * Snizzle is a advance feature-rich CSS Selector Engine v1.4.2
  * https://github.com/jqrony/snizzle
  * 
  * @releases +7 releases
- * @version 1.4.1
+ * @version 1.4.2
  * 
  * Copyright OpenJS Foundation and other contributors
  * Released under the MIT license
@@ -15,22 +15,20 @@
  */
 (function(window) {
 var i, support, unique, Expr, getText, isXML, tokenize, select,
-	contains, copy, flat, access, compile, serializeSpace,
+	contains, copy, flat, access, compile,
 
 	// Instance-specific data
 	expando = "snizzle" + 1 * Date.now(),
 	preferredDoc = window.document,
 
-	version = "1.4.1",
+	version = "1.4.2",
 
 	// Instance methods
 	hasOwn 	= ({}).hasOwnProperty,
 	arr			= [],
 	indexOf	= arr.indexOf,
 	push		= arr.push,
-	pop			= arr.pop,
 	slice		= arr.slice,
-	splice	= arr.splice,
 	concat	= arr.concat,
 
 	// Used for iframes
@@ -42,7 +40,7 @@ var i, support, unique, Expr, getText, isXML, tokenize, select,
 	},
 
 	// Local document vars
-	setDocument, document, docFragment, docElem, documentIsHTML,
+	setDocument, document, docElem, documentIsHTML,
 
 	// Regular expressions sources
 	// HTML Singleton TAGS with no closing TAG
@@ -105,7 +103,6 @@ var i, support, unique, Expr, getText, isXML, tokenize, select,
 	ltrimslash = /\/\s*$/,
 	rhtml = /HTML$/i,
 	rheader = /^h[1-6]$/i,
-	rwspaceboth = new RegExp(wspaceboth, "g"),
 	// None animation => (none 0s ease 0s 1 normal none running)
 	rnoneanimation = /^(none)\s*(0s)\s*(ease)\s*(0s).*(running)/,
 	// Easily-parseable/retrievable ID or TAG or CLASS selectors
@@ -768,8 +765,8 @@ Expr=Snizzle.selectors={
 			});
 		}),
 		"CHILD": specialFunction(function(type, what, _argument) {
+			var pseudo = ":" + type + "-" + what;
 			if (support.qsa) {
-				var pseudo = ":" + type + "-" + what;
 				if (_argument) {
 					pseudo += "(" + _argument + ")";
 				}
@@ -779,6 +776,7 @@ Expr=Snizzle.selectors={
 					return [].indexOf.call(results, elem) > -1;
 				});
 			}
+			return compile(pseudo);
 		}),
 		"PSEUDO": function(pseudo, arguemnt) {
 
@@ -1085,6 +1083,35 @@ function getDefaultAllDocumentElements(results, outermost) {
 	}
 	return seed;
 }
+
+compile=Snizzle.compile=function(pseudo) {
+	return function(elems) {
+		if (pseudo===":first-child" || pseudo===":first-of-type") {
+			return Snizzle.matches(":first", elems);
+		}
+		if (pseudo===":last-child" || pseudo===":last-of-type") {
+			return Snizzle.matches(":last", elems);
+		}
+		// :first:last should be same
+		if (pseudo===":only-child") {
+			var first = [];
+			access(function(elem) {
+				if (elem.parentElement.children.length===1) {
+					first.push(elem);
+				}
+			})(elems);
+			return first;
+		}
+		if (pseudo===":only-of-type") {
+			var first = [], results;
+			access(function(elem) {
+				results = Snizzle.matches(elem.nodeName.toLowerCase(), elem.parentElement.children);
+				results.length===1 && first.push(elem);
+			})(elems);
+			return first;
+		}
+	};
+};
 
 /**
  * Adjust selectors with comma seprated
