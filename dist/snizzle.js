@@ -1,9 +1,9 @@
 /**
- * Snizzle is a advance feature-rich CSS Selector Engine v1.4.2
+ * Snizzle is a advance feature-rich CSS Selector Engine v1.4.3
  * https://github.com/jqrony/snizzle
  * 
  * @releases +7 releases
- * @version 1.4.2
+ * @version 1.4.3
  * 
  * Copyright OpenJS Foundation and other contributors
  * Released under the MIT license
@@ -11,7 +11,7 @@
  * https://github.com/jqrony/snizzle/blob/main/LICENSE
  * 
  * @author Shahzada Modassir <codingmodassir@gmail.com>
- * Date: 20 December 2023 12:25 GMT+0530 (India Standard Time)
+ * Date: 13 January 2023 12:25 GMT+0530 (India Standard Time)
  */
 (function(window) {
 var i, support, unique, Expr, getText, isXML, tokenize, select,
@@ -21,7 +21,7 @@ var i, support, unique, Expr, getText, isXML, tokenize, select,
 	expando = "snizzle" + 1 * Date.now(),
 	preferredDoc = window.document,
 
-	version = "1.4.2",
+	version = "1.4.3",
 
 	// Instance methods
 	hasOwn 	= ({}).hasOwnProperty,
@@ -67,7 +67,6 @@ var i, support, unique, Expr, getText, isXML, tokenize, select,
 
 	whitespace = "[\\x20\\t\\r\\n\\f]",
 	identifier = "(?:\\\\[\\da-fA-F]{1,6}" + whitespace + "?|\\\\[^\\r\\n\\f]|[\\w-]|[^\0-\\x7f])+",
-	wspaceboth = "[#.'\"](" + whitespace + "+)([\\w-]+)(" + whitespace + "+)['\"]*",
 
 	attributes = "\\[" + whitespace + "*(" + identifier + ")(?:" + whitespace + "*([*^$|!~]?=)" +
 		whitespace + "*(?:'((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\"|(" +
@@ -766,7 +765,7 @@ Expr=Snizzle.selectors={
 		}),
 		"CHILD": specialFunction(function(type, what, _argument) {
 			var pseudo = ":" + type + "-" + what;
-			if (support.qsa) {
+			if (!support.qsa) {
 				if (_argument) {
 					pseudo += "(" + _argument + ")";
 				}
@@ -776,7 +775,7 @@ Expr=Snizzle.selectors={
 					return [].indexOf.call(results, elem) > -1;
 				});
 			}
-			return compile(pseudo);
+			return compile(pseudo, _argument);
 		}),
 		"PSEUDO": function(pseudo, arguemnt) {
 
@@ -1084,7 +1083,7 @@ function getDefaultAllDocumentElements(results, outermost) {
 	return seed;
 }
 
-compile=Snizzle.compile=function(pseudo) {
+compile=Snizzle.compile=function(pseudo, _argument) {
 	return function(elems) {
 		if (pseudo===":first-child" || pseudo===":first-of-type") {
 			return Snizzle.matches(":first", elems);
@@ -1107,6 +1106,24 @@ compile=Snizzle.compile=function(pseudo) {
 			access(function(elem) {
 				results = Snizzle.matches(elem.nodeName.toLowerCase(), elem.parentElement.children);
 				results.length===1 && first.push(elem);
+			})(elems);
+			return first;
+		}
+		if (pseudo===":nth-last-of-type") {
+			var first = [], results;
+			access(function(elem) {
+				results = slice.call(elem.parentNode.children).reverse();
+				first.push(results[_argument]);
+			})(elems);
+			return first;
+		}
+		if (pseudo===":nth-child") {
+			var first = [], results;
+			access(function(elem) {
+				results = slice.call(elem.parentNode.children)[_argument - 1];
+				if (indexOf.call(elems, results) > -1) {
+					first.push(results);
+				}
 			})(elems);
 			return first;
 		}
