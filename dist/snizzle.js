@@ -1,9 +1,9 @@
 /**
- * Snizzle is a advance feature-rich CSS Selector Engine v1.5.0
+ * Snizzle is a advance feature-rich CSS Selector Engine v1.5.1
  * https://github.com/jqrony/snizzle
  * 
  * @releases +7 releases
- * @version 1.5.0
+ * @version 1.5.1
  * 
  * Copyright OpenJS Foundation and other contributors
  * Released under the MIT license
@@ -11,7 +11,7 @@
  * https://github.com/jqrony/snizzle/blob/main/LICENSE
  * 
  * @author Shahzada Modassir <codingmodassir@gmail.com>
- * Date: 13 January 2023 12:25 GMT+0530 (India Standard Time)
+ * Date: 20 December 2023 12:25 GMT+0530 (India Standard Time)
  */
 (function(window) {
 var i, support, unique, Expr, getText, isXML, tokenize, select,
@@ -21,7 +21,7 @@ var i, support, unique, Expr, getText, isXML, tokenize, select,
 	expando = "snizzle" + 1 * Date.now(),
 	preferredDoc = window.document,
 
-	version = "1.5.0",
+	version = "1.5.1",
 
 	// Instance methods
 	hasOwn 	= ({}).hasOwnProperty,
@@ -41,14 +41,33 @@ var i, support, unique, Expr, getText, isXML, tokenize, select,
 
 	// Local document vars
 	setDocument, document, docElem, documentIsHTML,
+
+	// Regular expressions sources
+	// HTML Singleton TAGS with no closing TAG
+	nctags = "img|input|meta|area|keygen|base|link|br|hr|command|col|param|track|wbr|embed|" +
+		"source",
+
+	nstags = "svg|g|defs|desc|symbol|use|image|switch|set|circle|ellipse|line|polyline|" +
+		"animatetransform|mpath|foreignobject|linegradient|radialgradient|stop|pattern|" +
+		"polygon|path|text|tspan|textpath|tref|marker|view|rect|animatemotion|font|" +
+		"clippath|mask|filter|cursor|hkern|vkern|(?:font-(face)(?:.*|src|uri|format|name))",
+
 	booleans = "checked|selected|async|autofocus|autoplay|controls|defer|disabled|hidden|" +
 		"ismap|loop|multiple|open|readonly|required|scoped|muted",
 
 	themes = "theme-color|apple-mobile-web-app-status-bar-style|msapplication-TileColor|" +
 		"msapplication-navbutton-color",
+	
+	nsattributes = "clip|color|cursor|direction|display|fill|filter|font|kerning|marker|" +
+		"mask|stroke|zoomandpan|xml:(?:lang|space|base)|clip-(?:path|rule)|lighting-color|" +
+		"points|d|viewbox|enable-background|fill-(?:opacity|rule)|flood-(?:color|opacity)|" +
+		"glyph-orientation-(?:horizontal|vertical)|image-rendering|stop-(?:color|opacity)|" +
+		"dominant-baseline|x1|x2|y1|y2|cx|cy|r|ry|" +
+		"stroke-(?:dasharray|dashoffset|linecap|linejoin|miterlimit|opacity|width)|text-rendering",
 
 	whitespace = "[\\x20\\t\\r\\n\\f]",
 	identifier = "(?:\\\\[\\da-fA-F]{1,6}" + whitespace + "?|\\\\[^\\r\\n\\f]|[\\w-]|[^\0-\\x7f])+",
+	wspaceboth = "[#.'\"](" + whitespace + "+)([\\w-]+)(" + whitespace + "+)['\"]*",
 
 	attributes = "\\[" + whitespace + "*(" + identifier + ")(?:" + whitespace + "*([*^$|!~]?=)" +
 		whitespace + "*(?:'((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\"|(" +
@@ -91,12 +110,15 @@ var i, support, unique, Expr, getText, isXML, tokenize, select,
 	rcombinators = new RegExp("^" + whitespace+ "*([>+~=<]|" +whitespace+ ")" + whitespace + "*"),
 	rtrim = new RegExp("^" + whitespace + "+|((?:^|[^\\\\])(?:\\\\.)*)" + whitespace + "+$", "g"),
 	matchExpr = {
+		"inlineTag": new RegExp("^(?:" + nctags + ")$", "i"),
 		"bool": new RegExp("^(?:" + booleans + ")$", "i"),
 		"ID": new RegExp("^#(" + identifier + ")"),
 		"CLASS": new RegExp("^\\.(" + identifier + ")"),
 		"TAG": new RegExp("^(" + identifier + "|[*])"),
 		"ATTR": new RegExp("^" + attributes),
 		"PSEUDO": new RegExp("^" + pseudos),
+		"nstag": new RegExp("^(?:" + nstags + ")$", "i"),
+		"nsattr": new RegExp("^(?:" + nsattributes + ")$"),
 		"CHILD": new RegExp("^:(only|first|last|nth|nth-last)-(child|of-type)(?:\\(" +
 			whitespace + "*(even|odd|(([+-]|)(\\d*)n|)" + whitespace + "*(?:([+-]|)" +
 			whitespace + "*(\\d+)|))" + whitespace + "*\\)|)", "i"),
@@ -744,7 +766,7 @@ Expr=Snizzle.selectors={
 		}),
 		"CHILD": specialFunction(function(type, what, _argument) {
 			var pseudo = ":" + type + "-" + what;
-			if (!support.qsa) {
+			if (support.qsa) {
 				if (_argument) {
 					pseudo += "(" + _argument + ")";
 				}
@@ -754,7 +776,7 @@ Expr=Snizzle.selectors={
 					return [].indexOf.call(results, elem) > -1;
 				});
 			}
-			return compile(pseudo, _argument);
+			return compile(pseudo);
 		}),
 		"PSEUDO": function(pseudo, arguemnt) {
 
@@ -1031,7 +1053,7 @@ access(function(attr) {
 	Expr.attrHandle[attr]=access(function(elem) {
 		return attrFilter(elem, attr, "hasAttribute");
 	});
-})(booleans.match(/\w+/g));
+})(booleans.concat("|" + nsattributes).match(/\w+/g));
 
 /**
  * setFilters
@@ -1062,7 +1084,7 @@ function getDefaultAllDocumentElements(results, outermost) {
 	return seed;
 }
 
-compile=Snizzle.compile=function(pseudo, _argument) {
+compile=Snizzle.compile=function(pseudo) {
 	return function(elems) {
 		if (pseudo===":first-child" || pseudo===":first-of-type") {
 			return Snizzle.matches(":first", elems);
@@ -1085,24 +1107,6 @@ compile=Snizzle.compile=function(pseudo, _argument) {
 			access(function(elem) {
 				results = Snizzle.matches(elem.nodeName.toLowerCase(), elem.parentElement.children);
 				results.length===1 && first.push(elem);
-			})(elems);
-			return first;
-		}
-		if (pseudo===":nth-last-of-type") {
-			var first = [], results;
-			access(function(elem) {
-				results = slice.call(elem.parentNode.children).reverse();
-				first.push(results[_argument]);
-			})(elems);
-			return first;
-		}
-		if (pseudo===":nth-child") {
-			var first = [], results;
-			access(function(elem) {
-				results = slice.call(elem.parentNode.children)[_argument - 1];
-				if (indexOf.call(elems, results) > -1) {
-					first.push(results);
-				}
 			})(elems);
 			return first;
 		}

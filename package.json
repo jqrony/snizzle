@@ -1,7 +1,7 @@
 {
   "title": "Snizzle",
   "name": "snizzle",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "A pure-JavaScript fast, CSS selector engine program to be easily select DOM-Elements",
   "types": "dist/snizzle.js",
   "main": "dist/snizzle.js",
@@ -15,18 +15,19 @@
     "url": "git+https://github.com/jqrony/snizzle.git"
   },
   "directories": {
-    "dist": "dist",
-    "test": "test"
+    "dist": "dist"
   },
   "keywords": [
     "snizzle",
+    "sizzle",
     "hot selector",
     "CSS",
     "selectors",
     "pseudo",
     "jqrony",
     "library",
-    "javascript"
+    "javascript",
+    "css-select"
   ],
   "author": "Shahzada Modassir (https://github.com/jqrony/snizzle/blob/main/AUTHORS.txt)",
   "license": "MIT",

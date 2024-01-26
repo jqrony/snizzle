@@ -20,7 +20,7 @@
 - [Deployed source](https://jqrony.github.io/snizzle/dist/snizzle-min.js)
 
 ## New Features
-Snizzle `v1.5.0` in new features included for related advance DOM-Element Selecting Snizzle library in added new features `XPath selenium` now user can be select DOM elements XPath through.
+Snizzle `v1.5.1` in new features included for related advance DOM-Element Selecting Snizzle library in added new features `XPath selenium` now user can be select DOM elements XPath through.
 
 **Example**
 ```js
@@ -39,7 +39,7 @@ Snizzle("/html/body/main/div/div[2]/section/nav/ul/li[3]");
 ```
 
 ## Contribution Guides
-In order to build Snizzle, you should have Node.js/npm latest and git 1.5.0 or later (earlier versions might work OK, but are not tested).
+In order to build Snizzle, you should have Node.js/npm latest and git 1.5.1 or later (earlier versions might work OK, but are not tested).
 
 For Windows you have to download and install git and [Node.js](https://nodejs.org/download/).
 
@@ -62,7 +62,7 @@ As an alternative you can use the Yarn CLI command:
 ### Snizzle information
 For information on how to get started and how to use Snizzle, please see [Snizzle's](https://github.com/jqrony/snizzle) [documentation](https://github.com/jqrony/snizzle/wiki). For source files and issues, please visit the Snizzle repository.
 
-If upgrading, please see the blog post for [release 1.5.0](https://github.com/jqrony/snizzle/releases/tag/1.5.0). This includes notable differences from the previous version and a more readable changelog.
+If upgrading, please see the blog post for [release 1.5.1](https://github.com/jqrony/snizzle/releases/tag/1.5.1). This includes notable differences from the previous version and a more readable changelog.
 
 ## Including Snizzle
 Below are some of the most common ways to include Snizzle
@@ -107,35 +107,5 @@ git clone git://github.com/jqrony/snizzle.git
 ```
 In the `snizzle/dist` folder you will find build version of snizzle along with the minified copy and associated map file.
 
-## Dependents npm or Github
-
-- [These github repo depend on it.](https://github.com/jqrony/snizzle/network/dependents)
-- [These npm modules depend on it.](https://www.npmjs.com/browse/depended/snizzle)
-
-## 🙏 Follow on Github
-- [Follow javercel](https://github.com/javercel)
-- [Follow jqrony](https://github.com/jqrony)
-- [Follow official](https://github.com/shahzadamodassir)
-- [Follow PHPExpress](https://github.com/phpexpress)
-
 ## Contributing Guide
 See [CONTRIBUTING.md](https://github.com/jqrony/snizzle/blob/main/CONTRIBUTING.md)
-
-## 📚 Libraries and Frameworks
-- [PHPExpress](https://github.com/phpexpress/phpexpress)
-- [Snizzle](https://github.com/jqrony/snizzle)
-- [jQrony](https://github.com/jqrony/jqrony)
-- [Javercel](https://github.com/javercel/javercel)
-- [jQrony UI](https://github.com/jqrony/jqrony-ui)
-
-## Testing
-
-- Run `npm install`, it's also preferable (but not necessarily) to globally install `grunt-cli` package – `npm install -g grunt-cli`
-- Open `test/index.html` in the browser. Or run `npm test`/`grunt test` on the command line, if environment variables `BROWSER_STACK_USERNAME` and `BROWSER_STACK_ACCESS_KEY` are set up, it will attempt to use [Browserstack](https://www.browserstack.com/) service (you will need to install java on your machine so browserstack could connect to your local server), otherwise [PhantomJS](http://phantomjs.org/) will be used.
-- The actual unit tests are in the `test/unit` directory.
-
-## Developing with [grunt](http://gruntjs.com)
-
-- `npm run build` or `grunt` will lint, build, test, and compare the sizes of the built files.
-- `npm start` or `grunt start` can be run to re-lint, re-build, and re-test files as you change them.
-- `grunt -help` will show other available commands.

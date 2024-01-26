@@ -1,6 +1,6 @@
 {
   "name": "snizzle",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "main": "dist/snizzle.js",
   "ignore": [
     "node_modules",
@@ -11,12 +11,14 @@
   "keywords": [
     "snizzle",
     "hot selector",
+    "sizzle",
     "CSS",
     "selectors",
     "pseudo",
     "jqrony",
     "library",
-    "javascript"
+    "javascript",
+    "css-select"
   ],
   "author": {
     "name": "Shahzada Modassir",
