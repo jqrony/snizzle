@@ -1,9 +1,9 @@
 /**
- * Snizzle is a advance feature-rich CSS Selector Engine v1.5.1
+ * Snizzle is a advance feature-rich CSS Selector Engine v1.5.2
  * https://github.com/jqrony/snizzle
  * 
  * @releases +7 releases
- * @version 1.5.1
+ * @version 1.5.2
  * 
  * Copyright OpenJS Foundation and other contributors
  * Released under the MIT license
@@ -11,7 +11,7 @@
  * https://github.com/jqrony/snizzle/blob/main/LICENSE
  * 
  * @author Shahzada Modassir <codingmodassir@gmail.com>
- * Date: 20 December 2023 12:25 GMT+0530 (India Standard Time)
+ * Date: 26 January 2024 12:25 GMT+0530 (India Standard Time)
  */
 (function(window) {
 var i, support, unique, Expr, getText, isXML, tokenize, select,
@@ -21,7 +21,7 @@ var i, support, unique, Expr, getText, isXML, tokenize, select,
 	expando = "snizzle" + 1 * Date.now(),
 	preferredDoc = window.document,
 
-	version = "1.5.1",
+	version = "1.5.2",
 
 	// Instance methods
 	hasOwn 	= ({}).hasOwnProperty,
@@ -722,6 +722,35 @@ Expr=Snizzle.selectors={
 		"?": {dir: "previousElementSibling"},
 		"~": {dir: "nextElementSibling"},
 		"<": {dir: "previousElementSibling", first: true}
+	},
+	preFilter: {
+		"CLASS": function(match) {
+			return match.slice(0, 2);
+		},
+		"ATTR": function(match) {
+			// Move the given value to match[3] whether quoted or unquoted
+			match[3] = (match[3] || match[4] || match[5] || "");
+			return match.slice(0, 4);
+		},
+		"TAG": function(match) {
+			return match.slice(0, 2);
+		},
+		"ID": function(match) {
+			return match.slice(0, 2);
+		},
+		"CHILD": function(match) {
+			return match;
+		},
+		"PSEUDO": function(match) {
+
+			// Accept quoted ['|"] arguments as-is
+			if (match[3]) {
+				match[2] = match[4] || match[5] || "";
+			}
+
+			// Return only captures needed by the pseudo filter method (type and argument)
+			return match.slice(0, 3);
+		}
 	},
 	filter: {
 		"TAG": specialFunction(function(selector) {

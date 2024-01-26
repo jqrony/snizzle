@@ -20,7 +20,7 @@
 - [Deployed source](https://jqrony.github.io/snizzle/dist/snizzle-min.js)
 
 ## New Features
-Snizzle `v1.5.1` in new features included for related advance DOM-Element Selecting Snizzle library in added new features `XPath selenium` now user can be select DOM elements XPath through.
+Snizzle `v1.5.2` in new features included for related advance DOM-Element Selecting Snizzle library in added new features `XPath selenium` now user can be select DOM elements XPath through.
 
 **Example**
 ```js
@@ -39,7 +39,7 @@ Snizzle("/html/body/main/div/div[2]/section/nav/ul/li[3]");
 ```
 
 ## Contribution Guides
-In order to build Snizzle, you should have Node.js/npm latest and git 1.5.1 or later (earlier versions might work OK, but are not tested).
+In order to build Snizzle, you should have Node.js/npm latest and git 1.5.2 or later (earlier versions might work OK, but are not tested).
 
 For Windows you have to download and install git and [Node.js](https://nodejs.org/download/).
 
@@ -62,7 +62,7 @@ As an alternative you can use the Yarn CLI command:
 ### Snizzle information
 For information on how to get started and how to use Snizzle, please see [Snizzle's](https://github.com/jqrony/snizzle) [documentation](https://github.com/jqrony/snizzle/wiki). For source files and issues, please visit the Snizzle repository.
 
-If upgrading, please see the blog post for [release 1.5.1](https://github.com/jqrony/snizzle/releases/tag/1.5.1). This includes notable differences from the previous version and a more readable changelog.
+If upgrading, please see the blog post for [release 1.5.2](https://github.com/jqrony/snizzle/releases/tag/1.5.2). This includes notable differences from the previous version and a more readable changelog.
 
 ## Including Snizzle
 Below are some of the most common ways to include Snizzle
