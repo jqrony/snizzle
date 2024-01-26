@@ -1,9 +1,9 @@
 /**
- * Snizzle is a advance feature-rich CSS Selector Engine v1.5.2
+ * Snizzle is a advance feature-rich CSS Selector Engine v1.5.3
  * https://github.com/jqrony/snizzle
  * 
  * @releases +7 releases
- * @version 1.5.2
+ * @version 1.5.3
  * 
  * Copyright OpenJS Foundation and other contributors
  * Released under the MIT license
@@ -21,7 +21,7 @@ var i, support, unique, Expr, getText, isXML, tokenize, select,
 	expando = "snizzle" + 1 * Date.now(),
 	preferredDoc = window.document,
 
-	version = "1.5.2",
+	version = "1.5.3",
 
 	// Instance methods
 	hasOwn 	= ({}).hasOwnProperty,
@@ -1167,7 +1167,7 @@ tokenize=Snizzle.tokenize=function(selector) {
 			selector=selector.slice(matched.length);
 		}
 		for(type in Expr.filter) {
-			if ((match=matchExpr[type].exec(selector))) {
+			if ((match=matchExpr[type].exec(selector)) && (match=Expr.preFilter[type](match))) {
 				matched=match.shift();
 				groups.push({
 					type: type, value: matched, matches: match, unique: match[0]
@@ -1207,29 +1207,26 @@ function addCombinators(combine) {
  * Select the complex chainable expression selector like pseudos,
  * tag, class, child, advance complex selectors
  */
-select=Snizzle.select=function(selector, context, results, seed) {
-	var i=0, j, tokens, token, match, seedLen, feed, matched;
+select=Snizzle.select=function(selector, context, results) {
+	var i=0, j, tokens, token, match, feed;
 	results  = results||[];
-	seed     = seed||[];
-	seedLen  = seed.length;
 	selector = adjustFromGroupMatcher(selector);
 
 	while((tokens=selector[i++])) {
-		feed=seedLen && seed || [];
-		if (!seedLen) {
-			getDefaultAllDocumentElements(feed, context || preferredDoc);
+		
+		feed = getDefaultAllDocumentElements([], context || preferredDoc);
+		match = tokenize(tokens);
+		j = 0;
+
+		if (rcombinators.test(tokens) && tokens.length===1) {
+			feed = [context || preferredDoc];
 		}
-		match=tokenize(tokens);
-		j=0;
+
 		while((token=match[j++])) {
-			if ((matched=rcombinators.exec(tokens))) {
-				feed=Expr.combinators[matched[0]]([context]);
-			} else if (Expr.combinators[token.type]) {
+			if (Expr.combinators[token.type]) {
 				feed=Expr.combinators[token.type](feed);
 			} else {
-				feed=Expr.filter[token.type](token.matches[0], token.matches[1],
-					token.matches[2] || token.matches[3] || token.matches[4]
-				)(feed);
+				feed=Expr.filter[token.type].apply(null, token.matches)(feed);
 			}
 		}
 		push.apply(results, feed);
