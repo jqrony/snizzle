@@ -1,6 +1,7 @@
 {
+  "title": "Snizzle",
   "name": "snizzle",
-  "version": "1.5.3",
+  "version": "1.6.0",
   "main": "dist/snizzle.js",
   "ignore": [
     "node_modules",

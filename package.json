@@ -1,14 +1,13 @@
 {
   "title": "Snizzle",
   "name": "snizzle",
-  "version": "1.5.3",
+  "version": "1.6.0",
   "description": "A pure-JavaScript fast, CSS selector engine program to be easily select DOM-Elements",
   "types": "dist/snizzle.js",
   "main": "dist/snizzle.js",
   "scripts": {
     "build": "npm install && grunt",
-    "start": "grunt start",
-    "test": "grunt && grunt test"
+    "start": "grunt start"
   },
   "repository": {
     "type": "git",

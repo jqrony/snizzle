@@ -1,9 +1,9 @@
 /**
- * Snizzle is a advance feature-rich CSS Selector Engine v1.5.3
+ * Snizzle is a advance feature-rich CSS Selector Engine v1.6.0
  * https://github.com/jqrony/snizzle
  * 
  * @releases +7 releases
- * @version 1.5.3
+ * @version 1.6.0
  * 
  * Copyright OpenJS Foundation and other contributors
  * Released under the MIT license
@@ -21,7 +21,7 @@ var i, support, unique, Expr, getText, isXML, tokenize, select,
 	expando = "snizzle" + 1 * Date.now(),
 	preferredDoc = window.document,
 
-	version = "1.5.3",
+	version = "1.6.0",
 
 	// Instance methods
 	hasOwn 	= ({}).hasOwnProperty,
@@ -47,27 +47,14 @@ var i, support, unique, Expr, getText, isXML, tokenize, select,
 	nctags = "img|input|meta|area|keygen|base|link|br|hr|command|col|param|track|wbr|embed|" +
 		"source",
 
-	nstags = "svg|g|defs|desc|symbol|use|image|switch|set|circle|ellipse|line|polyline|" +
-		"animatetransform|mpath|foreignobject|linegradient|radialgradient|stop|pattern|" +
-		"polygon|path|text|tspan|textpath|tref|marker|view|rect|animatemotion|font|" +
-		"clippath|mask|filter|cursor|hkern|vkern|(?:font-(face)(?:.*|src|uri|format|name))",
-
 	booleans = "checked|selected|async|autofocus|autoplay|controls|defer|disabled|hidden|" +
 		"ismap|loop|multiple|open|readonly|required|scoped|muted",
 
 	themes = "theme-color|apple-mobile-web-app-status-bar-style|msapplication-TileColor|" +
 		"msapplication-navbutton-color",
-	
-	nsattributes = "clip|color|cursor|direction|display|fill|filter|font|kerning|marker|" +
-		"mask|stroke|zoomandpan|xml:(?:lang|space|base)|clip-(?:path|rule)|lighting-color|" +
-		"points|d|viewbox|enable-background|fill-(?:opacity|rule)|flood-(?:color|opacity)|" +
-		"glyph-orientation-(?:horizontal|vertical)|image-rendering|stop-(?:color|opacity)|" +
-		"dominant-baseline|x1|x2|y1|y2|cx|cy|r|ry|" +
-		"stroke-(?:dasharray|dashoffset|linecap|linejoin|miterlimit|opacity|width)|text-rendering",
 
 	whitespace = "[\\x20\\t\\r\\n\\f]",
 	identifier = "(?:\\\\[\\da-fA-F]{1,6}" + whitespace + "?|\\\\[^\\r\\n\\f]|[\\w-]|[^\0-\\x7f])+",
-	wspaceboth = "[#.'\"](" + whitespace + "+)([\\w-]+)(" + whitespace + "+)['\"]*",
 
 	attributes = "\\[" + whitespace + "*(" + identifier + ")(?:" + whitespace + "*([*^$|!~]?=)" +
 		whitespace + "*(?:'((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\"|(" +
@@ -117,21 +104,13 @@ var i, support, unique, Expr, getText, isXML, tokenize, select,
 		"TAG": new RegExp("^(" + identifier + "|[*])"),
 		"ATTR": new RegExp("^" + attributes),
 		"PSEUDO": new RegExp("^" + pseudos),
-		"nstag": new RegExp("^(?:" + nstags + ")$", "i"),
-		"nsattr": new RegExp("^(?:" + nsattributes + ")$"),
 		"CHILD": new RegExp("^:(only|first|last|nth|nth-last)-(child|of-type)(?:\\(" +
 			whitespace + "*(even|odd|(([+-]|)(\\d*)n|)" + whitespace + "*(?:([+-]|)" +
-			whitespace + "*(\\d+)|))" + whitespace + "*\\)|)", "i"),
-
-		// For use in libraries implementing .is()
-		// We use this for POS matching in `select`
-		"needsContext": new RegExp("^" + whitespace +
-			"*[>+~=<]|:(even|odd|eq|gt|lt|nth|first|last)(?:\\(" + whitespace +
-			"*((?:-\\d)?\\d*)" + whitespace + "*\\)|)(?=[^-]|$)", "i")
+			whitespace + "*(\\d+)|))" + whitespace + "*\\)|)", "i")
 	};
 	
 /**
- * 
+ * Create Snizzle External public API
  */
 function Snizzle(selector, context, results, seed) {
 	var expr, match, elem, newContext = context && context.ownerDocument,
@@ -590,18 +569,6 @@ function getComputed(elem, style) {
 }
 
 /**
- * Element Positional Pseudo Handler
- * ---------------------------------
- * createPositionalPseudo method returns the position elements.
- */
-function createPositionalPseudo(method) {
-	return access(function(elem) {
-		var pos = {abs: "absolute", stick: "sticky", fixed: "fix"};
-		return getComputed(elem, "position")===pos[method];
-	});
-}
-
-/**
  * Element Button/Input Pseudo Handler
  * -----------------------------------
  * createInputOrButtonPseudo method returns the input elements.
@@ -1057,6 +1024,15 @@ Expr=Snizzle.selectors={
 		}),
 		"robots": access(function(elem) {
 			return elem.nodeName.toLowerCase()==="meta" && attrFilter(elem, "name")==="robots";
+		}),
+		"required": access(function(elem) {
+			return elem.nodeName.toLowerCase()==="input" && !!elem.required;
+		}),
+		"default": function(elem) {
+			return Expr.checked(elem);
+		},
+		"readonly": access(function(elem) {
+			return elem.nodeName.toLowerCase()==="input" && !!elem.readOnly;
 		})
 	}
 };
@@ -1082,7 +1058,7 @@ access(function(attr) {
 	Expr.attrHandle[attr]=access(function(elem) {
 		return attrFilter(elem, attr, "hasAttribute");
 	});
-})(booleans.concat("|" + nsattributes).match(/\w+/g));
+})(booleans.match(/\w+/g));
 
 /**
  * setFilters
