@@ -22,22 +22,6 @@
 ## New Features
 Snizzle `v1.6.0` in new features included for related advance DOM-Element Selecting Snizzle library in added new features `XPath selenium` now user can be select DOM elements XPath through.
 
-**Example**
-```js
-// Select elements with XPath
-Snizzle("//*[@id="content"]/div[2]/section/nav/ul/li[3]");
-
-Snizzle("a[start-with(@href='://')]");
-
-// Simple @attributes Selector
-Snizzle("[@id]");
-
-Snizzle("li[odd()]"); // output: odd li elements sequence
-
-// Select elements with Full XPath
-Snizzle("/html/body/main/div/div[2]/section/nav/ul/li[3]");
-```
-
 ## Contribution Guides
 In order to build Snizzle, you should have Node.js/npm latest and git 1.6.0 or later (earlier versions might work OK, but are not tested).
 
@@ -71,7 +55,7 @@ Below are some of the most common ways to include Snizzle
 #### Script tag
 ```html
 <!--including Snizzle (recomended) HTML document in head section -->
-<script src="https://cdn.jsdelivr.net/npm/snizzle@1.6.0/dist/snizzle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/snizzle@1.6.1/dist/snizzle.min.js"></script>
 ```
 
 ## Usage
