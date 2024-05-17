@@ -1,9 +1,9 @@
 /**
- * Snizzle is a advance feature-rich CSS Selector Engine v1.6.1
+ * Snizzle is a advance feature-rich CSS Selector Engine v1.7.1
  * https://github.com/jqrony/snizzle
  * 
  * @releases +10 releases
- * @version 1.6.1
+ * @version 1.7.1
  * 
  * Copyright OpenJS Foundation and other contributors
  * Released under the MIT license
@@ -11,7 +11,7 @@
  * https://github.com/jqrony/snizzle/blob/main/LICENSE
  * 
  * @author Shahzada Modassir <codingmodassir@gmail.com>
- * Date: 20 January 2024 12:25 GMT+0530 (India Standard Time)
+ * Date: 05 May 2024 12:25 GMT+0530 (India Standard Time)
  */
 (function(window) {
 
@@ -30,7 +30,7 @@ var i, support, unique, Expr, getText, isXML, tokenize, select,
 	preferredDoc = window.document,
 
 	// The current version of Snizzle
-	version = "1.6.1",
+	version = "1.7.1",
 
 	// Instance array-obj methods
 	arr     = [],
@@ -164,12 +164,18 @@ var i, support, unique, Expr, getText, isXML, tokenize, select,
 	rnctags = new RegExp("^(?:" + nctags + ")$", "i"),
 	rnotype = new RegExp("^(?:" + notypes + ")$"),
 
+	// TAG testing for Audio or Video Element
+	rplayable = /^(?:audio|video)$/i,
+
 	// nodeType testing Element or Document or DocumentFragment
 	rprimaryNodeType = /^(?:1|9|11)$/,
 	rdashAlpha = /-([a-z])/g,
 
 	rXpOrdDesc = new RegExp("^" + xpOrdDesc),
 	rXpAxises = new RegExp("^" + xpAxises),
+
+	// Input type testing Element radio or checkbox
+	rcheckable = /^(?:radio|checkbox)$/i,
 
 	// Used for :readonly pseudo
 	rReadableType = new RegExp(notypes.replace(rtypes, "")),
@@ -255,9 +261,8 @@ function Snizzle(selector, context, results, seed) {
 	if (!seed) {
 		setDocument(context);
 		context = context || document;
-		if (!documentIsHTML ||
-			!(nodeType!==11 && (match = rquickExpr.exec(selector)))
-		) return;
+
+		(match=documentIsHTML && (nodeType!==11 && rquickExpr.exec(selector)));
 
 		// QSA Support
 		// Take advantage of querySelectorAll if support QSA method.
@@ -866,6 +871,25 @@ pseudoHooks = Snizzle.pseudoHooks = {
 		return access(function(elem) {
 			return nodeName(elem)==="form"&&((elem.method||attrVal(elem, "method"))===method);
 		});
+	},
+
+	/**
+	 * Create External rangePseudo Handler
+	 * -----------------------------------
+	 * Returns a function to use in pseudos for :in-range or :out-of-range
+	 */
+	rangePseudo: function(isOutRange) {
+		return access(function(elem) {
+			var isNum, min = elem.min, max = elem.max,
+				value = nodeName(elem)==="input" && elem.type==="number" && +elem.value;
+
+			isNum = function(data) {
+				return data !== "" && typeof data !== "boolean" && !isNaN(data);
+			};
+
+			return isNum(value) &&
+				(((isNum(min) ? +min <= value : true) && (isNum(max) ? +max >= value : true))===!isOutRange);
+		});
 	}
 };
 
@@ -1073,8 +1097,40 @@ Expr = Snizzle.selectors = {
 		"link": access(function(elem) {
 			return nodeName(elem)==="a" && attrVal(elem, "href") != null;
 		}),
+		"out-of-range": pseudoHooks.rangePseudo(true),
+		"in-range": pseudoHooks.rangePseudo(false),
 		"active": access(function(elem) {
 			return elem.activeElement;
+		}),
+		"indeterminate": access(function(elem) {
+			return nodeName(elem)==="input" && rcheckable.test(elem.type) && !!elem.indeterminate;
+		}),
+		"dir": specialFunction(function(expression) {
+			return access(function(elem) {
+				var dir = elem.dir || attrVal(elem, "dir");
+				return dir && dir === expression;
+			});
+		}),
+		"model": access(function(elem) {
+			return nodeName(elem)==="dialog" && elem.open===true;
+		}),
+		"exitscreen": access(function(elem) {
+			return !(elem.fullscreen || elem.fullscreenElement);
+		}),
+		"fullscreen": access(function(elem) {
+			return !!(elem.fullscreen || elem.fullscreenElement);
+		}),
+		"muted": access(function(elem) {
+			return rplayable.test(nodeName(elem)) && !!elem.muted;
+		}),
+		"autoplay": access(function(elem) {
+			return rplayable.test(nodeName(elem)) && !!elem.autoplay;
+		}),
+		"paused": access(function(elem) {
+			return rplayable.test(nodeName(elem)) && !!elem.paused;
+		}),
+		"playing": access(function(elem) {
+			return rplayable.test(nodeName(elem)) && !elem.paused;
 		}),
 		"default": function(elem) {
 			return Expr.pseudos.checked(elem);
@@ -1341,7 +1397,9 @@ Expr = Snizzle.selectors = {
 
 Expr.pseudos["match"] = Expr.pseudos["rcontains"];
 Expr.pseudos["ctx"]	= Expr.pseudos["context"];
+Expr.pseudos["where"] = Expr.pseudos["is"];
 Expr.pseudos["nth"]	= Expr.pseudos["eq"];
+Expr.pseudos["scope"] = Expr.pseudos["root"];
 Expr.pseudos["is"]	= Expr.pseudos["filter"];
 Expr.pseudos["imatch"] = Expr.pseudos["ircontains"];
 

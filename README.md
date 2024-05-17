@@ -2,7 +2,7 @@
 
 > A pure-JavaScript fast, CSS selector engine program to be easily select DOM-Elements.
 
-<img src="https://graphicserverstorage.github.io/store/snizzle_banner.png" style="width:100%;">
+<img src="thumbnail.png" style="width:100%;">
 
 ![license](https://img.shields.io/github/license/jqrony/snizzle?style=flat-square)
 [![install size](https://packagephobia.com/badge?p=snizzle)](https://packagephobia.com/result?p=snizzle)
@@ -55,7 +55,7 @@ Below are some of the most common ways to include Snizzle
 #### Script tag
 ```html
 <!--including Snizzle (recomended) HTML document in head section -->
-<script src="https://cdn.jsdelivr.net/npm/snizzle@1.6.1/dist/snizzle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/snizzle@1.7.1/dist/snizzle.min.js"></script>
 ```
 
 ## Usage
