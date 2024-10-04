@@ -7,8 +7,8 @@
 ![license](https://img.shields.io/github/license/jqrony/snizzle?style=flat-square)
 [![install size](https://packagephobia.com/badge?p=snizzle)](https://packagephobia.com/result?p=snizzle)
 ![author](https://img.shields.io/badge/Author-Shahzada%20Modassir-%2344cc11?style=flat-square)
-[![jsDelivr Hits](https://data.jsdelivr.com/v1/package/npm/snizzle/badge?style=flat-square)](https://www.jsdelivr.com/package/npm/snizzle)
-[![downloads month](https://img.shields.io/npm/dm/snizzle?style=flat-square)](https://www.npmjs.com/package/snizzle)
+[![jsDelivr Hits](https://img.shields.io/jsdelivr/npm/hy/snizzle?style=flat-square)](https://www.jsdelivr.com/package/npm/snizzle)
+[![downloads month](https://img.shields.io/npm/dt/snizzle?style=flat-square)](https://www.npmjs.com/package/snizzle)
 [![Github starts](https://img.shields.io/github/stars/jqrony/snizzle?style=flat-square)](https://github.com/jqrony/snizzle)
 [![Socket Badge](https://socket.dev/api/badge/npm/package/snizzle)](https://socket.dev/npm/package/snizzle)
 
