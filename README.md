@@ -2,7 +2,7 @@
 
 > A pure-JavaScript fast, CSS selector engine program to be easily select DOM-Elements.
 
-<img src="thumbnail.png" style="width:100%;">
+<img src="https://raw.githubusercontent.com/jqrony/content/main/snizzle/thumbnail.png" style="width:100%;">
 
 ![license](https://img.shields.io/github/license/jqrony/snizzle?style=flat-square)
 [![install size](https://packagephobia.com/badge?p=snizzle)](https://packagephobia.com/result?p=snizzle)
