@@ -3,7 +3,7 @@
 1. [Getting Involved](#getting-involved)
 2. [Questions and Discussion](#questions-and-discussion)
 3. [How To Report Bugs](#how-to-report-bugs)
-4. [Tips for Bug Patching](#tips-for-bug-patching)
+4. [Tips for Bug Patching](#tips-for-bug-patching)  
 
 Note: This is the code development repository for *jqrony Core* only. Before opening an issue or making a pull request, be sure you're in the right place.
 * jqrony plugin issues should be reported to the author of the plugin.
