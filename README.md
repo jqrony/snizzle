@@ -81,7 +81,7 @@ define(["snizzle"], function(snizzle) {
 ## Syntax code example
 There are simple some usage Snizzle code example syntax and learn more click [Documentation](https://github.com/jqrony/snizzle/wiki).
 
-Code example: `Snizzle("body > div:nth-child(2) + main:eq(2) > :input:disabled)`
+Code example: `Snizzle("body > div:nth-child(2) + main:eq(2) > :input:disabled);`
 
 
 ## How to build Snizzle
