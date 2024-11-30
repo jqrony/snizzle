@@ -13,7 +13,7 @@
  * @author Shahzada Modassir <codingmodassir@gmail.com>
  * Date: 28 November 10:03 GMT+0530 (India Standard Time)
  */
-(function(window) {
+export default (function(window) {
 
 /**
  * Inject [use strict] Mode
@@ -1684,22 +1684,5 @@ Snizzle.noConflict = function() {
 	return Snizzle;
 }
 
-// Register as named AMD module, since Codecore can be concatenated with other
-// files that may use define
-if (typeof define==="function" && define.amd) {
-	define(function() {return Snizzle});
-
-// For CommonJS and CommonJS-like environments
-// (such as Node.js) expose a factory as module.exports
-} else if (typeof module==="object" && module.exports) {
-	module.exports = Snizzle;
-
-// Attach layoutResizer in `window` with Expose layoutResizer Identifiers, AMD
-// CommonJS for browser emulators (trac-13566)
-} else {
-	window.Snizzle = Snizzle;
-}
-
-// EXPOSE
-
-})(this);
+return Snizzle;
+})(window);

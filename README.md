@@ -55,7 +55,7 @@ Below are some of the most common ways to include Snizzle
 #### Script tag
 ```html
 <!--including Snizzle (recomended) HTML document in head section -->
-<script src="https://cdn.jsdelivr.net/npm/snizzle@1.7.1/dist/snizzle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/snizzle@1.8.0/dist/snizzle.min.js"></script>
 ```
 
 ## Usage
@@ -81,7 +81,7 @@ define(["snizzle"], function(snizzle) {
 ## Syntax code example
 There are simple some usage Snizzle code example syntax and learn more click [Documentation](https://github.com/jqrony/snizzle/wiki).
 
-Code example: `Snizzle("body > div:nth-child(2) + main:eq(2) > :input:disabled);`
+Code example: `Snizzle("body > div:nth-child(2) + main:eq(2) > :input:disabled)`
 
 
 ## How to build Snizzle
@@ -92,4 +92,4 @@ git clone git://github.com/jqrony/snizzle.git
 In the `snizzle/dist` folder you will find build version of snizzle along with the minified copy and associated map file.
 
 ## Contributing Guide
-See [CONTRIBUTING.md](https://github.com/jqrony/snizzle/blob/main/CONTRIBUTING.md) 
+See [CONTRIBUTING.md](https://github.com/jqrony/snizzle/blob/main/CONTRIBUTING.md)
